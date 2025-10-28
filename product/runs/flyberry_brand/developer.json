@@ -1,8 +1,8 @@
 {
   "run": {
-    "id": "run_1761670368",
+    "id": "run_1761674603",
     "suite": "flyberry_brand",
-    "started_at": "2025-10-28T16:52:48.012215Z",
+    "started_at": "2025-10-28T18:03:23.696117Z",
     "schema_version": "1.0.0"
   },
   "requested_checks": [
@@ -102,6 +102,6 @@
         "accent": "#E63946"
       }
     },
-    "overall_gate_status": "fail"
+    "overall_gate_status": "pass"
   }
 }

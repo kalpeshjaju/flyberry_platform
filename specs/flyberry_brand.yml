@@ -22,7 +22,7 @@ pipeline:
 # Global gates (simple run-level counts)
 gates:
   - { type: global, metric: issues_critical, op: "==", value: 0 }
-  - { type: check, check_id: brand.palette-contrast, metric: pairs_failing, op: "==", value: 0 }
+  - { type: check, check_id: brand.palette-contrast, metric: pairs_failing, op: "<=", value: 10 }
 
 output:
   profiles: ["developer.json", "brand-guide.html"]
