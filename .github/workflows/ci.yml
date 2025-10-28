@@ -40,25 +40,25 @@ jobs:
 
       - name: Fail if gates failed (brand)
         run: |
-          python - << 'PY'
-import json, sys
-with open('product/runs/flyberry_brand/run.json') as f:
-    data = json.load(f)
-status = (data.get('meta') or {}).get('overall_gate_status')
-print('brand overall_gate_status =', status)
-sys.exit(1 if status != 'pass' else 0)
-PY
+          python3 - << 'PY'
+          import json, sys
+          with open('product/runs/flyberry_brand/run.json') as f:
+              data = json.load(f)
+          status = (data.get('meta') or {}).get('overall_gate_status')
+          print('brand overall_gate_status =', status)
+          sys.exit(1 if status != 'pass' else 0)
+          PY
 
       - name: Fail if gates failed (site)
         run: |
-          python - << 'PY'
-import json, sys
-with open('product/runs/flyberry_oct_restart/run.json') as f:
-    data = json.load(f)
-status = (data.get('meta') or {}).get('overall_gate_status')
-print('site overall_gate_status =', status)
-sys.exit(1 if status != 'pass' else 0)
-PY
+          python3 - << 'PY'
+          import json, sys
+          with open('product/runs/flyberry_oct_restart/run.json') as f:
+              data = json.load(f)
+          status = (data.get('meta') or {}).get('overall_gate_status')
+          print('site overall_gate_status =', status)
+          sys.exit(1 if status != 'pass' else 0)
+          PY
 
       - name: Render projections from saved runs
         if: always()
