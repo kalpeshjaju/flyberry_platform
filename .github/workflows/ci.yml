@@ -19,31 +19,26 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        working-directory: flyberry_platform
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt || true
 
       - name: Validate specs (JSON)
-        working-directory: flyberry_platform
         run: |
           python core/engine/validate_spec.py --spec specs/flyberry_brand.yml --json
           python core/engine/validate_spec.py --spec specs/flyberry_oct_restart.yml --json
 
       - name: Plan runs
-        working-directory: flyberry_platform
         run: |
           python core/engine/plan.py --spec specs/flyberry_brand.yml
           python core/engine/plan.py --spec specs/flyberry_oct_restart.yml
 
       - name: Run suites
-        working-directory: flyberry_platform
         run: |
           python core/engine/run.py --spec specs/flyberry_brand.yml --no-validate
           python core/engine/run.py --spec specs/flyberry_oct_restart.yml --no-validate
 
       - name: Fail if gates failed (brand)
-        working-directory: flyberry_platform
         run: |
           python - << 'PY'
 import json, sys
@@ -55,7 +50,6 @@ sys.exit(1 if status != 'pass' else 0)
 PY
 
       - name: Fail if gates failed (site)
-        working-directory: flyberry_platform
         run: |
           python - << 'PY'
 import json, sys
@@ -68,7 +62,6 @@ PY
 
       - name: Render projections from saved runs
         if: always()
-        working-directory: flyberry_platform
         run: |
           python core/engine/render.py --run product/runs/flyberry_brand/run.json --profile developer.json || true
           python core/engine/render.py --run product/runs/flyberry_brand/run.json --profile brand-guide.html || true
@@ -80,6 +73,6 @@ PY
         with:
           name: flyberry-artifacts
           path: |
-            flyberry_platform/product/runs/**
+            product/runs/**
           if-no-files-found: warn
 
