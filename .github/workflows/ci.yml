@@ -101,7 +101,7 @@ jobs:
           echo "✓ Artifact pinning works"
 
       - name: Upload audit reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: audit-reports-python-${{ matrix.python-version }}
@@ -112,7 +112,7 @@ jobs:
           retention-days: 30
 
       - name: Upload CSV reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: csv-reports-python-${{ matrix.python-version }}
@@ -215,7 +215,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload security reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: security-reports
