@@ -1,0 +1,28 @@
+# specs/flyberry_brand.yml
+suite: flyberry_brand
+description: "Brand palette + tokens checks using blockized flow."
+
+pipeline:
+  - name: brand_palette
+    block: brand_palette
+    description: "Validate palette contrast"
+    inputs:
+      - fixtures/brand/palette.json
+    outputs:
+      - product/palette.json
+
+  - name: brand_tokens
+    block: brand_tokens
+    description: "Validate token naming"
+    inputs:
+      - fixtures/brand/tokens.json
+    outputs:
+      - product/tokens.json
+
+# Global gates (simple run-level counts)
+gates:
+  - { type: global, metric: issues_critical, op: "==", value: 0 }
+  - { type: check, check_id: brand.palette-contrast, metric: pairs_failing, op: "==", value: 0 }
+
+output:
+  profiles: ["developer.json", "brand-guide.html"]

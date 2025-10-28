@@ -1,0 +1,23 @@
+# specs/flyberry_oct_restart.yml
+suite: flyberry_oct_restart
+description: "Site restart basic checks (a11y + links)."
+
+pipeline:
+  - name: site_a11y
+    block: site_a11y
+    description: "Check for missing img alt"
+    inputs:
+      - fixtures/site/sample.html
+
+  - name: links_assets
+    block: site_links_assets
+    description: "Find broken links from prepared crawl"
+    inputs:
+      - fixtures/site/links.json
+
+gates:
+  - { metric: issues_critical, op: "==", value: 0 }
+
+output:
+  profiles: ["developer.json", "exec.csv"]
+

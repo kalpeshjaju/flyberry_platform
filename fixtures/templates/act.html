@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ description }}">
+    <title>{{ title }} | Flyberry Brand Package</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    {{ custom_css }}
+</head>
+<body class="act-{{ act_number }} {{ act_file }}">
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="site-title">
+                    <a href="index.html">Flyberry Brand Package</a>
+                </h1>
+                <nav class="header-nav">
+                    <a href="act-1-who-we-are.html" class="nav-link {% if act_number == '1' %}active{% endif %}">Act 1</a>
+                    <a href="act-2-where-we-are.html" class="nav-link {% if act_number == '2' %}active{% endif %}">Act 2</a>
+                    <a href="act-3-discoveries.html" class="nav-link {% if act_number == '3' %}active{% endif %}">Act 3</a>
+                    <a href="act-4-market-proof.html" class="nav-link {% if act_number == '4' %}active{% endif %}">Act 4</a>
+                    <a href="act-5-where-to-go.html" class="nav-link {% if act_number == '5' %}active{% endif %}">Act 5</a>
+                    <a href="appendix.html" class="nav-link {% if act_number == '6' %}active{% endif %}">Appendix</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="act-header">
+                <div class="act-number">Act {{ act_number }}</div>
+                <h1 class="act-title">{{ act_title }}</h1>
+                <p class="act-subtitle">{{ act_subtitle }}</p>
+            </div>
+
+            <div class="act-body">
+                {{ content }}
+            </div>
+
+            <nav class="act-navigation">
+                {% if prev_act %}
+                <a href="{{ prev_act.url }}" class="nav-button secondary">
+                    ← Previous: {{ prev_act.title }}
+                </a>
+                {% else %}
+                <div></div>
+                {% endif %}
+
+                {% if next_act %}
+                <a href="{{ next_act.url }}" class="nav-button">
+                    Next: {{ next_act.title }} →
+                </a>
+                {% else %}
+                <div></div>
+                {% endif %}
+            </nav>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>Flyberry Brand Package | Version 1.0 | Last Updated: {{ last_updated }}</p>
+                <p>Strategic Direction for ₹35 Cr → ₹100 Cr Growth Journey</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

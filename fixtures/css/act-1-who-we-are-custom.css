@@ -1,0 +1,327 @@
+/* Act 1: WHO WE ARE - Custom Styles
+ * Better space utilization, single accent color, visual hierarchy
+ */
+
+/* Container - wider for better space usage */
+.act-1 .container {
+  max-width: 1400px;
+}
+
+/* Document Sections - cleaner cards */
+.document-section {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 0;
+  margin-bottom: 40px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* Document Title - single orange accent */
+.doc-title {
+  background: #d4762c;
+  color: white;
+  padding: 20px 32px;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  border: none;
+}
+
+/* Document body padding */
+.document-section > *:not(.doc-title) {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.document-section > h3:first-of-type {
+  margin-top: 32px;
+}
+
+.document-section > *:last-child {
+  margin-bottom: 32px;
+}
+
+/* Two-column layout for list-heavy sections */
+.doc-00 ul,
+.doc-06 ul:not(.grid-list) {
+  column-count: 2;
+  column-gap: 32px;
+}
+
+@media (max-width: 768px) {
+  .doc-00 ul,
+  .doc-06 ul:not(.grid-list) {
+    column-count: 1;
+  }
+}
+
+/* Fortune 500 list - compact grid */
+.doc-06 h4:contains("Fortune 500") + ul,
+.doc-06 p:contains("Technology") + ul,
+.doc-06 p:contains("Technology") ~ ul {
+  columns: 3;
+  column-gap: 24px;
+  padding-left: 32px;
+}
+
+.doc-06 ul li {
+  margin-bottom: 8px;
+  break-inside: avoid;
+}
+
+/* Headers - cleaner hierarchy */
+.document-section h3 {
+  font-size: 1.5rem;
+  color: #1a1a1a;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #d4762c;
+}
+
+.document-section h4 {
+  background: #f9fafb;
+  padding: 16px 24px;
+  border-left: 4px solid #d4762c;
+  margin: 24px 0 16px 0;
+  border-radius: 8px;
+  font-size: 1.15rem;
+  color: #1a1a1a;
+}
+
+/* Tables - side-by-side when possible */
+.document-section table {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin: 20px 0;
+  font-size: 0.95rem;
+}
+
+.document-section thead {
+  background: #d4762c;
+}
+
+.document-section th {
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.document-section td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.document-section tbody tr:hover {
+  background: #fef3e7;
+}
+
+/* Hero products - 2 column layout */
+.doc-04 > div,
+.doc-05 > div {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 1100px) {
+  .doc-04 > div,
+  .doc-05 > div {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Blockquotes - "The Moment" */
+.document-section blockquote {
+  background: #fef3e7;
+  border-left: 4px solid #d4762c;
+  padding: 20px 24px;
+  margin: 24px 0;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  font-style: italic;
+}
+
+/* Lists - tighter spacing */
+.document-section ul,
+.document-section ol {
+  margin: 16px 0;
+  padding-left: 28px;
+}
+
+.document-section li {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.document-section li::marker {
+  color: #d4762c;
+}
+
+/* Compact data presentation */
+.document-section p {
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+
+/* Strong = orange accent */
+.document-section strong {
+  color: #d4762c;
+  font-weight: 600;
+}
+
+/* Metrics - highlight boxes */
+.doc-06 table tbody tr:first-child {
+  background: #fef3e7;
+  font-weight: 600;
+}
+
+/* Horizontal rules - subtle */
+.document-section hr {
+  border: none;
+  height: 1px;
+  background: #e5e7eb;
+  margin: 32px 0;
+}
+
+/* Navigation links at bottom */
+.document-section > p:last-of-type em {
+  display: block;
+  background: #f9fafb;
+  padding: 16px 20px;
+  border-radius: 8px;
+  border-left: 3px solid #d4762c;
+  margin-top: 32px;
+  font-style: normal;
+  font-size: 0.95rem;
+}
+
+.document-section > p:last-of-type em a {
+  color: #d4762c;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Code blocks */
+.document-section pre {
+  background: #1a1a1a;
+  color: #f9fafb;
+  padding: 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 20px 0;
+  font-size: 0.9rem;
+}
+
+.document-section code {
+  background: #f3f4f6;
+  color: #d4762c;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* Pricing tables - compact */
+.doc-04 table,
+.doc-05 table {
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.doc-04 table td:last-child,
+.doc-05 table td:last-child {
+  text-align: right;
+  font-weight: 600;
+  color: #d4762c;
+}
+
+/* Pillar sections - 2 column */
+.doc-00 h4 {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid #d4762c;
+  padding: 16px 20px;
+  margin: 20px 0 12px 0;
+}
+
+/* Validation metrics - emphasis */
+.doc-06 h3 {
+  background: #fef3e7;
+  padding: 16px 24px;
+  margin: 32px -32px 24px -32px;
+  border-bottom: 3px solid #d4762c;
+  border-radius: 0;
+}
+
+/* Brand essence - cleaner */
+.doc-07 h4 {
+  background: #1a1a1a;
+  color: white;
+  border: none;
+}
+
+/* Read time indicator */
+.document-section > p:first-of-type {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+}
+
+/* Checkmarks in lists */
+.document-section li:has(::before) {
+  list-style: none;
+}
+
+/* Remove excess padding from nested elements */
+.document-section table,
+.document-section ul,
+.document-section ol,
+.document-section blockquote,
+.document-section pre {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .act-1 .container {
+    max-width: 100%;
+    padding: 0 16px;
+  }
+
+  .document-section > *:not(.doc-title) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .doc-title {
+    font-size: 1.25rem;
+    padding: 16px 20px;
+  }
+
+  .doc-00 ul,
+  .doc-06 ul {
+    column-count: 1;
+  }
+}
+
+/* Print */
+@media print {
+  .document-section {
+    page-break-inside: avoid;
+    box-shadow: none;
+  }
+
+  .doc-title {
+    background: #d4762c !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

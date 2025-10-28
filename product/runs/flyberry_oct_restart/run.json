@@ -1,0 +1,78 @@
+{
+  "run": {
+    "id": "run_1761670385",
+    "suite": "flyberry_oct_restart",
+    "started_at": "2025-10-28T16:53:05.054884Z",
+    "schema_version": "1.0.0"
+  },
+  "requested_checks": [
+    "a11y.img-alt",
+    "links.broken"
+  ],
+  "blocks_used": [
+    "site.a11y@1.0.0",
+    "site.links-assets@1.0.0"
+  ],
+  "results": [
+    {
+      "check_id": "a11y.img-alt",
+      "block_id": "site.a11y@1.0.0",
+      "status": "fail",
+      "metrics": {
+        "total_images": 1,
+        "missing_alt": 1
+      },
+      "issues": [
+        {
+          "id": "a11y.img-alt:1",
+          "severity": "major",
+          "confidence": 0.9,
+          "location": {
+            "selector": "img:nth-of-type(1)"
+          },
+          "evidence": {
+            "type": "dom",
+            "note": "img missing alt"
+          },
+          "rationale": "Images must have meaningful alternative text.",
+          "suggested_fix": "Add descriptive alt text or mark decorative.",
+          "meta": {
+            "wcag": "1.1.1"
+          }
+        }
+      ]
+    },
+    {
+      "check_id": "links.broken",
+      "block_id": "site.links-assets@1.0.0",
+      "status": "fail",
+      "metrics": {
+        "links_total": 2,
+        "links_broken": 1
+      },
+      "issues": [
+        {
+          "id": "links.broken:/missing",
+          "severity": "major",
+          "confidence": 0.9,
+          "location": {
+            "url": "",
+            "selector": "a[href='/missing']"
+          },
+          "evidence": {
+            "type": "http",
+            "note": "status 404"
+          },
+          "rationale": "Links should not return client or server errors.",
+          "suggested_fix": "Update link or fix target resource.",
+          "meta": {
+            "status": 404
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "overall_gate_status": "pass"
+  }
+}

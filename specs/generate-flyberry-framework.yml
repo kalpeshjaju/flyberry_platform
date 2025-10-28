@@ -1,0 +1,35 @@
+# specs/generate-flyberry-framework.yml
+#
+# This spec defines the standard pipeline for generating and validating
+# the Flyberry brand framework.
+
+suite: flyberry-brand-generation
+description: "Loads raw Flyberry data, generates the brand framework, and validates the output."
+
+# The sequence of blocks to execute in order.
+# The output of one block can be used as the input for the next.
+pipeline:
+  - name: load_data
+    block: data_loader
+    description: "Load and process raw data and brand intelligence."
+    inputs:
+      - fixtures/raw_data
+      - fixtures/brand_intel
+    outputs:
+      - product/processed_data.json
+
+  - name: generate_framework
+    block: framework_generator
+    description: "Generate the brand framework from processed data."
+    inputs:
+      - product/processed_data.json
+      - fixtures/templates
+    outputs:
+      - product/flyberry_brand_framework.md
+
+  - name: validate_output
+    block: validator
+    description: "Run a comprehensive set of validation tests on the generated framework."
+    inputs:
+      - product/flyberry_brand_framework.md
+    # Note: MVP validator prints findings to console; no gates are enforced here.

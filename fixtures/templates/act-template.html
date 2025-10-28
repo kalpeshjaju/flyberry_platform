@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Act {{ act_number }}: {{ act_title }} - Flyberry Gourmet</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+    <header class="brand-header">
+        <h1 class="brand-title">Flyberry Gourmet</h1>
+        <p class="doc-type">Brand Strategy Document</p>
+    </header>
+
+    <nav class="act-nav">
+        <span class="act-label">Act {{ act_number }}</span>
+        <h2 class="act-title">{{ act_title }}</h2>
+    </nav>
+
+    <main class="content">
+        {{ content }}
+    </main>
+
+    <footer class="doc-footer">
+        <p>Flyberry Gourmet Brand Package | Act {{ act_number }}: {{ act_title }}</p>
+        <p>Generated: {{ generation_date }} | Data Sources: 261+ reviews, 5 customer segments, 13 products, Q1 FY26 metrics</p>
+    </footer>
+</body>
+</html>

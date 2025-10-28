@@ -1,0 +1,107 @@
+{
+  "run": {
+    "id": "run_1761670368",
+    "suite": "flyberry_brand",
+    "started_at": "2025-10-28T16:52:48.012215Z",
+    "schema_version": "1.0.0"
+  },
+  "requested_checks": [
+    "brand.palette-contrast",
+    "brand.tokens-naming"
+  ],
+  "blocks_used": [
+    "brand.palette@1.0.0",
+    "brand.tokens@1.0.0"
+  ],
+  "results": [
+    {
+      "check_id": "brand.palette-contrast",
+      "block_id": "brand.palette@1.0.0",
+      "status": "fail",
+      "metrics": {
+        "pairs_tested": 6,
+        "pairs_failing": 2,
+        "min_ratio": 4.5
+      },
+      "issues": [
+        {
+          "id": "brand.palette-contrast:#0B132B:#1C2541",
+          "severity": "major",
+          "confidence": 0.95,
+          "location": {},
+          "evidence": {
+            "type": "color_pair",
+            "note": "#0B132B vs #1C2541"
+          },
+          "rationale": "Contrast ratio 1.22 below minimum 4.5",
+          "suggested_fix": "Increase contrast or adjust palette steps",
+          "meta": {
+            "ratio": 1.22
+          }
+        },
+        {
+          "id": "brand.palette-contrast:#5BC0BE:#FFFFFF",
+          "severity": "major",
+          "confidence": 0.95,
+          "location": {},
+          "evidence": {
+            "type": "color_pair",
+            "note": "#5BC0BE vs #FFFFFF"
+          },
+          "rationale": "Contrast ratio 2.16 below minimum 4.5",
+          "suggested_fix": "Increase contrast or adjust palette steps",
+          "meta": {
+            "ratio": 2.16
+          }
+        }
+      ]
+    },
+    {
+      "check_id": "brand.tokens-naming",
+      "block_id": "brand.tokens@1.0.0",
+      "status": "fail",
+      "metrics": {
+        "tokens_total": 2,
+        "tokens_bad": 1,
+        "prefix": "fb-"
+      },
+      "issues": [
+        {
+          "id": "brand.tokens-naming:accent",
+          "severity": "minor",
+          "confidence": 0.9,
+          "location": {},
+          "evidence": {
+            "type": "token_name",
+            "note": "accent"
+          },
+          "rationale": "Token names must start with prefix 'fb-'",
+          "suggested_fix": "Rename to 'fb-accent'",
+          "meta": {
+            "group": "color"
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "palettes": [
+      {
+        "name": "default",
+        "colors": [
+          "#0B132B",
+          "#1C2541",
+          "#5BC0BE",
+          "#FFFFFF"
+        ]
+      }
+    ],
+    "tokens": {
+      "color": {
+        "fb-primary": "#1D3557",
+        "accent": "#E63946"
+      }
+    },
+    "overall_gate_status": "fail"
+  }
+}

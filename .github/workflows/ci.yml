@@ -1,0 +1,224 @@
+name: Flyberry Platform CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+
+jobs:
+  validate-and-test:
+    name: Validate & Test Platform
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          # Optional: Install watchdog for better watch mode performance
+          pip install 'watchdog>=4.0.1' || echo "watchdog install failed (optional)"
+
+      - name: Validate specs
+        run: |
+          echo "Validating all spec files..."
+          python core/engine/validate_spec.py --spec specs/flyberry_brand.yml
+          python core/engine/validate_spec.py --spec specs/flyberry_oct_restart.yml
+          python core/engine/validate_spec.py --spec specs/generate-flyberry-framework.yml
+
+      - name: Validate specs (JSON output)
+        run: |
+          echo "Validating specs with JSON output..."
+          python core/engine/validate_spec.py --spec specs/flyberry_brand.yml --json > validate_brand.json
+          python core/engine/validate_spec.py --spec specs/flyberry_oct_restart.yml --json > validate_site.json
+          cat validate_brand.json
+          cat validate_site.json
+
+      - name: Plan execution
+        run: |
+          echo "Planning execution for all specs..."
+          python core/engine/plan.py --spec specs/flyberry_brand.yml
+          python core/engine/plan.py --spec specs/flyberry_oct_restart.yml
+
+      - name: Plan execution (JSON output)
+        run: |
+          echo "Planning with JSON output..."
+          python core/engine/plan.py --spec specs/flyberry_brand.yml --json > plan_brand.json
+          python core/engine/plan.py --spec specs/flyberry_oct_restart.yml --json > plan_site.json
+
+      - name: Run brand suite (strict validation)
+        run: |
+          echo "Running brand suite with strict schema validation..."
+          python core/engine/run.py --spec specs/flyberry_brand.yml --strict-validate
+
+      - name: Run site suite (strict validation)
+        run: |
+          echo "Running site suite with strict schema validation..."
+          python core/engine/run.py --spec specs/flyberry_oct_restart.yml --strict-validate
+
+      - name: Check gates status
+        id: check_gates
+        run: |
+          echo "Checking readiness gates..."
+
+          # Brand suite gate status
+          BRAND_STATUS=$(python -c "import json; print(json.load(open('product/runs/flyberry_brand/run.json'))['meta']['overall_gate_status'])")
+          echo "Brand suite gate status: $BRAND_STATUS"
+          echo "brand_gate_status=$BRAND_STATUS" >> $GITHUB_OUTPUT
+
+          # Site suite gate status
+          SITE_STATUS=$(python -c "import json; print(json.load(open('product/runs/flyberry_oct_restart/run.json'))['meta']['overall_gate_status'])")
+          echo "Site suite gate status: $SITE_STATUS"
+          echo "site_gate_status=$SITE_STATUS" >> $GITHUB_OUTPUT
+
+          # Fail if any gate failed
+          if [ "$BRAND_STATUS" = "fail" ] || [ "$SITE_STATUS" = "fail" ]; then
+            echo "❌ One or more gates failed"
+            exit 1
+          else
+            echo "✅ All gates passed"
+          fi
+
+      - name: Test artifact pinning
+        run: |
+          echo "Testing artifact pinning (re-render from saved run)..."
+          python core/engine/render.py --run product/runs/flyberry_brand/run.json --profile exec.csv
+          python core/engine/render.py --run product/runs/flyberry_oct_restart/run.json --profile exec.csv
+          echo "✓ Artifact pinning works"
+
+      - name: Upload audit reports
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: audit-reports-python-${{ matrix.python-version }}
+          path: |
+            product/runs/*/
+            validate_*.json
+            plan_*.json
+          retention-days: 30
+
+      - name: Upload CSV reports
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: csv-reports-python-${{ matrix.python-version }}
+          path: product/runs/**/*.csv
+          retention-days: 30
+
+      - name: Comment on PR (if gates failed)
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const brandStatus = '${{ steps.check_gates.outputs.brand_gate_status }}';
+            const siteStatus = '${{ steps.check_gates.outputs.site_gate_status }}';
+
+            const comment = `## ⚠️ Flyberry Platform CI - Gates Failed
+
+            | Suite | Gate Status |
+            |-------|-------------|
+            | Brand | ${brandStatus === 'fail' ? '❌ FAIL' : '✅ PASS'} |
+            | Site  | ${siteStatus === 'fail' ? '❌ FAIL' : '✅ PASS'} |
+
+            **Action Required:** Review the audit reports to see which gates failed.
+
+            [View full CI run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  lint-and-format:
+    name: Lint & Format Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install linting tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 black isort mypy
+          pip install -r requirements.txt
+
+      - name: Run flake8
+        run: |
+          # Stop the build if there are Python syntax errors or undefined names
+          flake8 core --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Exit-zero treats all errors as warnings
+          flake8 core --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
+        continue-on-error: true
+
+      - name: Run black (check only)
+        run: |
+          black --check --diff core
+        continue-on-error: true
+
+      - name: Run isort (check only)
+        run: |
+          isort --check-only --diff core
+        continue-on-error: true
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install safety bandit
+
+      - name: Run safety check
+        run: |
+          safety check --json || echo "Safety check completed with warnings"
+        continue-on-error: true
+
+      - name: Run bandit security scan
+        run: |
+          bandit -r core -f json -o bandit-report.json || true
+          bandit -r core
+        continue-on-error: true
+
+      - name: Upload security reports
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: security-reports
+          path: |
+            bandit-report.json
+          retention-days: 30

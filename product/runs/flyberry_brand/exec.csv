@@ -1,0 +1,4 @@
+check_id,status,url,selector,severity
+brand.palette-contrast,fail,,,major
+brand.palette-contrast,fail,,,major
+brand.tokens-naming,fail,,,minor

@@ -1,0 +1,7 @@
+{
+  "links": [
+    {"href": "/ok", "status": 200},
+    {"href": "/missing", "status": 404}
+  ]
+}
+

@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://flyberry/schemas/brand_package.v1.json",
+  "title": "BrandPackageV1",
+  "type": "object",
+  "required": ["id", "version", "tokens", "palettes"],
+  "properties": {
+    "id": {"type": "string"},
+    "version": {"type": "string"},
+    "tokens": {
+      "type": "object",
+      "properties": {
+        "color": {"type": "object"},
+        "spacing": {"type": "object"},
+        "typography": {"type": "object"},
+        "shadow": {"type": "object"},
+        "radius": {"type": "object"}
+      },
+      "additionalProperties": true
+    },
+    "palettes": {"type": "array", "items": {"type": "object"}},
+    "logo_assets": {"type": "object"},
+    "typography": {"type": "object"},
+    "templates": {"type": "array"},
+    "guidelines_uri": {"type": "string"},
+    "metrics": {"type": "object"},
+    "meta": {"type": "object"}
+  },
+  "additionalProperties": true
+}
+
